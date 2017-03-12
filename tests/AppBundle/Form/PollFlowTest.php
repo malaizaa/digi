@@ -42,6 +42,20 @@ class PoolFlowTest extends \PHPUnit_Framework_TestCase
                     'validation_groups' => ['step4'],
                 ],
             ],
+            [
+                'label' => 'Kokias programavimo kalbas mokate?',
+                'form_type' => 'AppBundle\Form\PollForm',
+                'form_options' => [
+                    'validation_groups' => ['step5'],
+                ],
+            ],
+            [
+                'label' => 'Kokias programavimo kalbas mokate?',
+                'form_type' => 'AppBundle\Form\PollForm',
+                'form_options' => [
+                    'validation_groups' => ['step6'],
+                ],
+            ],
         ];
 
         $flow = new PollFlow();

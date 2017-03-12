@@ -48,7 +48,7 @@ class PollFlow extends FormFlow
                 ],
             ],
             [
-                'label' => 'Kokias programavimo kalbas mokate?',
+                'label' => 'Prašome patalpinti savo nuotrauka?',
                 'form_type' => 'AppBundle\Form\PollForm',
                 'form_options' => [
                     'validation_groups' => ['step6'],
