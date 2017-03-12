@@ -16,7 +16,7 @@ class PollController extends Controller
     {
         $formData = new Poll();
 
-        $flow = $this->get('digi.form.flow.poll'); // must match the flow's service id
+        $flow = $this->get('app.form.flow.poll');
         $flow->bind($formData);
 
         // form of the current step
@@ -24,18 +24,22 @@ class PollController extends Controller
         if ($flow->isValid($form)) {
             $flow->saveCurrentStepData($form);
 
+            // upload image
+            if ($file = $formData->getImage()) {
+                $fileName = $this->get('app.service.image_uploader')->upload($file);
+                $formData->setImage($fileName);
+            }
+
+            $this->savePoll($formData);
+
             if ($flow->nextStep()) {
                 // form for the next step
                 $form = $flow->createForm();
             } else {
                 // flow finished
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($formData);
-                $em->flush();
-
                 $flow->reset(); // remove step data from the session
 
-                return $this->redirect($this->generateUrl('home')); // redirect when done
+                return $this->redirectToRoute('start_poll'); // redirect when done
             }
         }
 
@@ -43,5 +47,19 @@ class PollController extends Controller
             'form' => $form->createView(),
             'flow' => $flow,
         ]);
+    }
+
+    /**
+     * @param Poll $poll
+     *
+     * @return Poll
+     */
+    protected function savePoll(Poll $poll) : Poll
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($poll);
+        $em->flush();
+
+        return $poll;
     }
 }

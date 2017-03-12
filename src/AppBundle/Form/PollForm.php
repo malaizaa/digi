@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class PollForm extends AbstractType {
 
@@ -30,20 +31,41 @@ class PollForm extends AbstractType {
                     'label' => 'Lytis',
                     'expanded' => true,
                     'multiple' => false,
-                    'choices' => array(
+                    'choices' => [
                         'm' => 'vyras',
                         'f' => 'moteris'
-                    ),
+                    ],
                 ]);
+                break;
             case 4:
                 $builder->add('isInterestedProgramming', ChoiceType::class, [
-                    'label' => 'Lytis',
+                    'label' => 'Ar domitės programavimu?',
                     'expanded' => true,
                     'multiple' => false,
-                    'choices' => array(
-                        'y' => 'taip',
-                        'n' => 'ne'
-                    ),
+                    'choices' => [
+                        'taip' => 1,
+                        'ne' => 0
+                    ],
+                ]);
+                break;
+            case 5:
+                $builder->add('skills', ChoiceType::class, [
+                    'label' => 'Kokias programavimo kalbas mokate?',
+                    'expanded' => true,
+                    'multiple' => true,
+                    'choices' => [
+                        'PHP' => 'test',
+                    	'CSS' => 1,
+                    	'HTML' => 2,
+                    	'JavaScript' => 3,
+                    	'Java' => 4,
+                    	'Nemoku nė vienos' => 'none'
+                    ],
+                ]);
+                break;
+            case 6:
+                $builder->add('image', FileType::class, [
+                    'label' => 'Prašome patalpinti savo nuotrauka',
                 ]);
                 break;
         }

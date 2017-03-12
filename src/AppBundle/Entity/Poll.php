@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -33,7 +34,7 @@ class Poll
     /**
      * @var string
      *
-     * @ORM\Column(name="gender", type="string", length=1)
+     * @ORM\Column(name="gender", type="string", length=1, nullable=true)
      * @Assert\NotBlank(groups={"step3"})
      */
     private $gender;
@@ -41,7 +42,7 @@ class Poll
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="birth_date", type="date")
+     * @ORM\Column(name="birth_date", type="date", nullable=true)
      * @Assert\NotBlank(groups={"step2"})
      * @Assert\Type("\DateTime", groups={"step2"})
      */
@@ -50,10 +51,22 @@ class Poll
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_interested_programming", type="boolean")
+     * @ORM\Column(name="is_interested_programming", type="boolean", nullable=true)
      */
     private $isInterestedProgramming;
 
+    /**
+     * @var ArrayCollection
+     */
+    private $skills;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @Assert\NotBlank()
+     * @Assert\File(mimeTypes={ "application/jpeg" })
+     */
+    private $image;
 
     /**
      * Get id
@@ -140,11 +153,11 @@ class Poll
     /**
      * Set isInterestedProgramming
      *
-     * @param boolean $isInterestedProgramming
+     * @param bool $isInterestedProgramming
      *
      * @return Poll
      */
-    public function setIsInterestedProgramming($isInterestedProgramming)
+    public function setIsInterestedProgramming(bool $isInterestedProgramming)
     {
         $this->isInterestedProgramming = $isInterestedProgramming;
 
@@ -159,5 +172,37 @@ class Poll
     public function getIsInterestedProgramming()
     {
         return $this->isInterestedProgramming;
+    }
+
+    /**
+     * @param array $skills
+     *
+     * @return Poll
+     */
+    public function setSkills(array $skills)
+    {
+        $this->skills = $skills;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSkills()
+    {
+        return $this->skills;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
     }
 }

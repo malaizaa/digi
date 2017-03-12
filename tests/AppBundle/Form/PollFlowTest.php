@@ -1,17 +1,19 @@
 <?php
 
-namespace AppBundle\Form;
+namespace Tests\AppBundle\Form;
 
-use Craue\FormFlowBundle\Form\FormFlow;
+use AppBundle\Form\PollFlow;
 
-class PollFlow extends FormFlow
+class PoolFlowTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @return array
-     */
-    public function loadStepsConfig() : array
+    public function testItsExtendsFormFlow()
     {
-        return [
+        $this->assertInstanceof('\Craue\FormFlowBundle\Form\FormFlow', new PollFlow());
+    }
+
+    public function testItLoadsStepsConfig()
+    {
+        $config = [
             [
                 'label' => 'Koks jūsų vardas',
                 'form_type' => 'AppBundle\Form\PollForm',
@@ -40,20 +42,9 @@ class PollFlow extends FormFlow
                     'validation_groups' => ['step4'],
                 ],
             ],
-            [
-                'label' => 'Kokias programavimo kalbas mokate?',
-                'form_type' => 'AppBundle\Form\PollForm',
-                'form_options' => [
-                    'validation_groups' => ['step5'],
-                ],
-            ],
-            [
-                'label' => 'Kokias programavimo kalbas mokate?',
-                'form_type' => 'AppBundle\Form\PollForm',
-                'form_options' => [
-                    'validation_groups' => ['step6'],
-                ],
-            ],
         ];
+
+        $flow = new PollFlow();
+        $this->assertEquals($config, $flow->loadStepsConfig());
     }
 }

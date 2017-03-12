@@ -2,6 +2,9 @@ parameters:
     #parameter_name: value
 
 services:
-    digi.form.flow.poll:
+    app.form.flow.poll:
         class: AppBundle\Form\PollFlow
         parent: craue.form.flow
+    app.service.image_uploader:
+        class: AppBundle\Service\FileUploader
+        arguments: ['%uploads_directory%']
