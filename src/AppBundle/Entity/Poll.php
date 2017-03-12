@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Poll
@@ -25,6 +26,7 @@ class Poll
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank(groups={"step1"})
      */
     private $name;
 
@@ -32,6 +34,7 @@ class Poll
      * @var string
      *
      * @ORM\Column(name="gender", type="string", length=1)
+     * @Assert\NotBlank(groups={"step3"})
      */
     private $gender;
 
@@ -39,6 +42,8 @@ class Poll
      * @var \DateTime
      *
      * @ORM\Column(name="birth_date", type="date")
+     * @Assert\NotBlank(groups={"step2"})
+     * @Assert\Type("\DateTime", groups={"step2"})
      */
     private $birthDate;
 
