@@ -21,7 +21,7 @@ class PollFlow extends FormFlow
                     'validation_groups' => ['step1'],
                 ],
                 'skip' => function ($estimatedCurrentStepNumber, FormFlowInterface $flow) {
-                    return $flow->getFormData()->getQuestion() >= 1;
+                    return $flow->getFormData()->getQuestion() > 0;
                 },
             ],
             [
@@ -31,7 +31,7 @@ class PollFlow extends FormFlow
                     'validation_groups' => ['step2'],
                 ],
                 'skip' => function ($estimatedCurrentStepNumber, FormFlowInterface $flow) {
-                    return $flow->getFormData()->getQuestion() >= 2;
+                    return $flow->getFormData()->getQuestion() > 1;
                 },
             ],
             [
@@ -41,7 +41,7 @@ class PollFlow extends FormFlow
                     'validation_groups' => ['step3'],
                 ],
                 'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
-                    return $flow->getFormData()->getQuestion() >= 3;
+                    return $flow->getFormData()->getQuestion() > 2;
                 },
             ],
             [
@@ -51,7 +51,7 @@ class PollFlow extends FormFlow
                     'validation_groups' => ['step4'],
                 ],
                 'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
-                    return $flow->getFormData()->getQuestion() >= 4;
+                    return $flow->getFormData()->getQuestion() > 3;
                 },
             ],
             [
@@ -61,7 +61,7 @@ class PollFlow extends FormFlow
                     'validation_groups' => ['step5'],
                 ],
                 'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
-                    return $flow->getFormData()->getQuestion() >= 5;
+                    return $flow->getFormData()->getQuestion() > 4;
                 },
             ],
             [

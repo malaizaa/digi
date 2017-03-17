@@ -14,6 +14,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Poll
 {
+    CONST SKILL_PHP = 'php';
+    CONST SKILL_CSS = 'css';
+    CONST SKILL_HTML = 'html';
+    CONST SKILL_JAVASCRIPT = 'javascript';
+    CONST SKILL_JAVA = 'java';
+    CONST SKILL_NONE = 'none';
+
     /**
      * @var int
      *
@@ -63,14 +70,16 @@ class Poll
     private $isInterestedProgramming;
 
     /**
-     * @var ArrayCollection
+     * @var array
+     *
+     * @ORM\Column(type="array", nullable=false)
      */
     private $skills;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      *
-     * @Assert\Image(maxSize = "500k")
+     * @Assert\Image(maxSize = "500k", groups={"step6"})
      */
     private $image;
 
@@ -205,7 +214,7 @@ class Poll
      *
      * @return Poll
      */
-    public function setSkills(array $skills)
+    public function setSkills($skills)
     {
         $this->skills = $skills;
 
@@ -220,11 +229,17 @@ class Poll
         return $this->skills;
     }
 
+    /**
+     * @return string
+     */
     public function getImage()
     {
         return $this->image;
     }
 
+    /**
+     * @param string $image
+     */
     public function setImage($image)
     {
         $this->image = $image;
@@ -233,10 +248,43 @@ class Poll
     }
 
     /**
+     * @return string
+     */
+    public function getSkill($skill)
+    {
+        // if value exist
+        return array_search('none', $this->skills);
+    }
+
+    /**
      * @return bool
      */
     public function isFinishedInStep4() : bool
     {
         return ($this->getQuestion() === 4 && ! $this->getIsInterestedProgramming());
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFinishedInStep5() : bool
+    {
+        return ($this->getQuestion() === 5 && false !== $this->getSkill(self::SKILL_NONE));
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFinished() : bool
+    {
+        return ($this->isFullyFinished() || $this->isFinishedInStep4() || $this->isFinishedInStep5());
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFullyFinished() : bool
+    {
+        return ($this->getQuestion() === 6);
     }
 }

@@ -53,8 +53,8 @@ class PoolFormTest extends \PHPUnit_Framework_TestCase
                     'expanded' => true,
                     'multiple' => false,
                     'choices' => [
-                        'm' => 'vyras',
-                        'f' => 'moteris'
+                        'vyras' => 'm',
+                        'moteris' => 'f',
                     ],
                 ]
             ],

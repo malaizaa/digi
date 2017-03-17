@@ -1,5 +1,42 @@
 {% extends 'base.html.twig' %}
 
+{% import "macros.html.twig" as macros %}
+
 {% block body %}
+    {% if poll.fullyFinished %}
+    <table>
+        <tr>
+            <td><b>Vardas:</b></td>
+            <td>{{ poll.name }}</td>
+        </tr>
+        <tr>
+            <td><b>Gimimo data:</b></td>
+            <td>{{ poll.birthDate|date('Y-m-d') }}</td>
+        </tr>
+        <tr>
+            <td><b>Lytis:</b></td>
+            <td>{{ macros.gender(poll.gender) }}</td>
+        </tr>
+        <tr>
+            <td><b>Ar domites programavimu:</b></td>
+            <td>{{ macros.boolToString(poll.getIsInterestedProgramming) }}</td>
+        </tr>
+        <tr>
+            <td><b>Kalbas. kurias mokate:</b></td>
+            <td>{{ poll.skills|join(', ') }}</td>
+        </tr>
+        <tr>
+            <td><b>Nuotrauka:</b></td>
+            <td>
+                {% if poll.image %}
+                    <img src="{{ asset('uploads/images/' ~ poll.image) }}" width="80px" />
+                {% else %}
+                {{ '-' }}
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    {% else %}
     <b>{{ 'Jus jau esate atlikęs apklausą'|trans }}</b>
+    {% endif %}
 {% endblock %}

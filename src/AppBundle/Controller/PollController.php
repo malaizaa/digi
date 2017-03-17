@@ -40,9 +40,17 @@ class PollController extends Controller
     /**
      * @Route("/finished", name="poll_finished")
      */
-    public function finishedAction()
+    public function finishedAction(Request $request)
     {
-        return $this->render('poll/finished.html.twig');
+        $poll = $this->get('app.factory.poll_factory')->getPollFromRequest($request);
+
+        if (! $poll instanceof Poll) {
+            throw $this->createNotFoundException('The poll does not exist');
+        }
+
+        return $this->render('poll/finished.html.twig', [
+            'poll' => $poll
+        ]);
     }
 
     /**
@@ -53,8 +61,8 @@ class PollController extends Controller
      */
     protected function returnResponse(Poll $poll, array $params)
     {
-        // if poll was finished in step 4 when redirect user other view
-        if ($poll->isFinishedInStep4()) {
+        // if poll was finished in any step
+        if ($poll->isFinished()) {
             return $this->redirectToRoute('poll_finished');
         }
 

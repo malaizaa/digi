@@ -1,0 +1,6 @@
+{
+  "name": "digi",
+  "dependencies": {
+    "jquery": "~3.2"
+  }
+}

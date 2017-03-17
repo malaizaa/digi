@@ -1,0 +1,7 @@
+{% macro boolToString(value) %}
+    {{ value == 1 ? 'Taip' : 'Ne' }}
+{% endmacro %}
+
+{% macro gender(value) %}
+    {{ value == 'f' ? 'Moteris' : 'Vyras' }}
+{% endmacro %}

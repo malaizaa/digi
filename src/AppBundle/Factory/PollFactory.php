@@ -29,15 +29,28 @@ class PollFactory
      */
     public function createPoll(Request $request) : Poll
     {
-        if ($request->cookies->has('poll_id')) {
-            $pollId = $request->cookies->get('poll_id');
-            $poll = $this->objectManager->getRepository('AppBundle:Poll')->find($pollId);
+        $poll = $this->getPollFromRequest($request);
 
-            if ($poll instanceof Poll) {
-                return $poll;
-            }
+        if ($poll instanceof Poll) {
+            return $poll;
         }
 
         return new Poll();
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Poll|null
+     */
+    public function getPollFromRequest(Request $request)
+    {
+        if ($request->cookies->has('poll_id')) {
+            $pollId = $request->cookies->get('poll_id');
+
+            return $this->objectManager->getRepository('AppBundle:Poll')->find($pollId);
+        }
+
+        return null;
     }
 }

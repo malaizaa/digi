@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use AppBundle\Entity\Poll;
 
 class PollForm extends AbstractType {
 
@@ -32,8 +33,8 @@ class PollForm extends AbstractType {
                     'expanded' => true,
                     'multiple' => false,
                     'choices' => [
-                        'm' => 'vyras',
-                        'f' => 'moteris'
+                        'vyras' => 'm',
+                        'moteris' => 'f'
                     ],
                 ]);
                 break;
@@ -53,19 +54,21 @@ class PollForm extends AbstractType {
                     'label' => 'Kokias programavimo kalbas mokate?',
                     'expanded' => true,
                     'multiple' => true,
+                    'attr' => ['data-handler' => 'skillHandler'],
                     'choices' => [
-                        'PHP' => 'test',
-                    	'CSS' => 1,
-                    	'HTML' => 2,
-                    	'JavaScript' => 3,
-                    	'Java' => 4,
-                    	'Nemoku nė vienos' => 'none'
+                        'PHP' => Poll::SKILL_PHP,
+                        'CSS' => Poll::SKILL_PHP,
+                    	'HTML' => Poll::SKILL_HTML,
+                    	'JavaScript' => Poll::SKILL_JAVASCRIPT,
+                    	'Java' => Poll::SKILL_JAVA,
+                    	'Nemoku nė vienos' => Poll::SKILL_NONE,
                     ],
                 ]);
                 break;
             case 6:
                 $builder->add('image', FileType::class, [
                     'label' => 'Prašome patalpinti savo nuotrauka',
+                    'required' => false
                 ]);
                 break;
         }

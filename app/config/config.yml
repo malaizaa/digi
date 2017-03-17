@@ -39,7 +39,15 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    globals:
+        uploads_directory: '%uploads_directory%'
 
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
+        
 # Doctrine Configuration
 doctrine:
     dbal:
