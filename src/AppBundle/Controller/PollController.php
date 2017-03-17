@@ -5,61 +5,63 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Cookie;
 use AppBundle\Entity\Poll;
 
 class PollController extends Controller
 {
     /**
-     * @Route("/", name="start_poll")
+     * @Route("/", name="poll_start")
      */
     public function indexAction(Request $request)
     {
-        $formData = new Poll();
-
         $flow = $this->get('app.form.flow.poll');
-        $flow->bind($formData);
-
-        // form of the current step
+        $poll = $this->get('app.factory.poll_factory')->createPoll($request);
+        $flow->bind($poll);
         $form = $flow->createForm();
+
         if ($flow->isValid($form)) {
             $flow->saveCurrentStepData($form);
 
-            // upload image
-            if ($file = $formData->getImage()) {
-                $fileName = $this->get('app.service.image_uploader')->upload($file);
-                $formData->setImage($fileName);
-            }
-
-            $this->savePoll($formData);
+            $this->get('app.service.poll_manager')->processPollDataByFlow($flow, $poll);
 
             if ($flow->nextStep()) {
-                // form for the next step
                 $form = $flow->createForm();
             } else {
-                // flow finished
-                $flow->reset(); // remove step data from the session
+                $flow->reset();
 
-                return $this->redirectToRoute('start_poll'); // redirect when done
+                return $this->redirectToRoute('poll_finished');
             }
         }
 
-        return $this->render('poll/index.html.twig', [
-            'form' => $form->createView(),
-            'flow' => $flow,
-        ]);
+        return $this->returnResponse($poll, ['form' => $form->createView(), 'flow' => $flow]);
     }
 
     /**
-     * @param Poll $poll
-     *
-     * @return Poll
+     * @Route("/finished", name="poll_finished")
      */
-    protected function savePoll(Poll $poll) : Poll
+    public function finishedAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($poll);
-        $em->flush();
+        return $this->render('poll/finished.html.twig');
+    }
 
-        return $poll;
+    /**
+     * @param Poll  $poll
+     * @param array $params
+     *
+     * @return Response|RedirectResponse
+     */
+    protected function returnResponse(Poll $poll, array $params)
+    {
+        // if poll was finished in step 4 when redirect user other view
+        if ($poll->isFinishedInStep4()) {
+            return $this->redirectToRoute('poll_finished');
+        }
+
+        $response = $this->render('poll/index.html.twig', $params);
+
+        $response->headers->setCookie(new Cookie('poll_id', $poll->getId()));
+
+        return $response;
     }
 }

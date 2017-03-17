@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Form;
+namespace Tests\AppBundle\Service;
 
 use AppBundle\Service\FileUploader;
 

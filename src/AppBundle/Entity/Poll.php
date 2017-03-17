@@ -34,6 +34,13 @@ class Poll
     /**
      * @var string
      *
+     * @ORM\Column(type="smallint")
+     */
+    private $question;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="gender", type="string", length=1, nullable=true)
      * @Assert\NotBlank(groups={"step3"})
      */
@@ -63,8 +70,7 @@ class Poll
     /**
      * @ORM\Column(type="string", nullable=true)
      *
-     * @Assert\NotBlank()
-     * @Assert\File(mimeTypes={ "application/jpeg" })
+     * @Assert\Image(maxSize = "500k")
      */
     private $image;
 
@@ -100,6 +106,26 @@ class Poll
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param int $question
+     *
+     * @return $this
+     */
+    public function setQuestion(int $question)
+    {
+        $this->question = $question;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getQuestion()
+    {
+        return $this->question;
     }
 
     /**
@@ -204,5 +230,13 @@ class Poll
         $this->image = $image;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFinishedInStep4() : bool
+    {
+        return ($this->getQuestion() === 4 && ! $this->getIsInterestedProgramming());
     }
 }

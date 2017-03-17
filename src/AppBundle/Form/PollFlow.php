@@ -3,6 +3,8 @@
 namespace AppBundle\Form;
 
 use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Form\FormFlowInterface;
+use SM\Factory\Factory;
 
 class PollFlow extends FormFlow
 {
@@ -18,6 +20,9 @@ class PollFlow extends FormFlow
                 'form_options' => [
                     'validation_groups' => ['step1'],
                 ],
+                'skip' => function ($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+                    return $flow->getFormData()->getQuestion() >= 1;
+                },
             ],
             [
                 'label' => 'Jūsų gimimo data',
@@ -25,6 +30,9 @@ class PollFlow extends FormFlow
                 'form_options' => [
                     'validation_groups' => ['step2'],
                 ],
+                'skip' => function ($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+                    return $flow->getFormData()->getQuestion() >= 2;
+                },
             ],
             [
                 'label' => 'Lytis',
@@ -32,6 +40,9 @@ class PollFlow extends FormFlow
                 'form_options' => [
                     'validation_groups' => ['step3'],
                 ],
+                'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+                    return $flow->getFormData()->getQuestion() >= 3;
+                },
             ],
             [
                 'label' => 'Ar domitės programavimu?',
@@ -39,6 +50,9 @@ class PollFlow extends FormFlow
                 'form_options' => [
                     'validation_groups' => ['step4'],
                 ],
+                'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+                    return $flow->getFormData()->getQuestion() >= 4;
+                },
             ],
             [
                 'label' => 'Kokias programavimo kalbas mokate?',
@@ -46,6 +60,9 @@ class PollFlow extends FormFlow
                 'form_options' => [
                     'validation_groups' => ['step5'],
                 ],
+                'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+                    return $flow->getFormData()->getQuestion() >= 5;
+                },
             ],
             [
                 'label' => 'Prašome patalpinti savo nuotrauka?',
